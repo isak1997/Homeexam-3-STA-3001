@@ -1,0 +1,109 @@
+\documentclass{article}     
+\usepackage[utf8]{inputenc}	
+\usepackage[norsk]{babel}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} 
+\usepackage{multirow}
+\usepackage{graphicx}		% Graphics package
+\graphicspath{ {./images/} }
+
+\usepackage[center]{caption}
+\usepackage{subcaption}
+\usepackage{wrapfig}  		% Wrap text around figures	
+\usepackage{float} 			% To place figures correctly
+\usepackage{listings} 		% To include code-snippets
+\usepackage{color}
+\usepackage{hyperref} 		
+\usepackage{siunitx}  		% Write units easily \SI{value}
+\usepackage[utf8]{inputenc}
+\lstset{
+  basicstyle=\footnotesize\ttfamily,
+  identifierstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  keywordstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+\usepackage{changepage}
+\usepackage{pdfpages}	
+\usepackage{lscape} 
+\usepackage[authoryear,square]{natbib} 
+% References/bibliography package
+\usepackage{footnote}
+\usepackage{appendix} 
+% Appendix + add to table of contents
+\usepackage{sidecap}
+% Table packages
+\usepackage{tabularx}
+\makesavenoteenv{tabular}
+\makesavenoteenv{table}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{rotating}
+\newcommand*\rot{\rotatebox{90}}
+\newcommand{\E}{\mathop{\mathbb{E}}}
+
+
+\title{Homeexam 3; STA-3001}
+\author{Isak Edvardsen }
+\date{March 2020}
+
+\begin{document}
+
+\maketitle
+
+\section{1: EM, MCEM, DA}
+
+\vspace{0.5cm}
+
+Assume data from $n=20$ street lamps, each having two light bulbs.\\
+
+If we assume that the failure times of individual light bulbs are independent and exponentially distributed with mean $1/\lambda$ then the failure times of the street lamps is gamma distributed (with $\alpha = 2$):
+
+\begin{equation}
+    f(x|\lambda) = \lambda^2 x e^{-x\lambda}, \hspace{.5cm} x>0, \hspace{.5cm} \lambda >0
+\end{equation} 
+\\
+
+\noindent Assume a random sample of n observations of failure times of street lamps, some of these are censored and we observe $\{ X_i\}_{i=1}^{n+m}$. \\
+
+\noindent We'll suppose $\{ X_i \}_{i=1}^m$ are observed, but $X_i = c$ for $m + 1 \leq i \leq n$ (only know that they had not failed yet at a certain time $c$).\\
+
+The likelihood is
+
+\begin{equation}
+    L(X;\lambda) = \bigg( \prod_{i=1}^{m} f(x_i|\lambda) \bigg) \cdot \bigg( \prod_{i=m+1}^{n} f(x_i|\lambda) \bigg)
+\end{equation}
+
+
+The observations $\{ X_i \}_{i=m+1}^n$ can be treated as if they were missing.
+
+
+Define the complete observations $Z = \{ X_i \}_{i=m+1}^{n}$, hence Z contains the unobserved failure times. \\
+
+The likelihood of $Y = (X,Z)$ (independent) is:
+
+\begin{equation}
+    L(Y;\lambda) = \bigg( \prod_{i=1}^{m} f(x_i|\lambda) \bigg) \cdot \bigg( \prod_{i=m+1}^{n} f(z_i|\lambda) \bigg)
+\end{equation}
+
+\newpage 
+
+the completed log-likelihood is:
+
+\begin{align}
+    logL(Y;\lambda) &= log \bigg\{ \prod_{i=1}^{m} f(x_i|\lambda)\cdot \prod_{i=m+1}^{n} f(z_i|\lambda) \bigg\} \\ 
+    &= \sum_{i=1}^{m} logf(x_i|\lambda) +  \sum_{i=m+1}^{n} logf(z_i|\lambda) \nonumber \\
+    &= \sum_{i=1}^{m} log\big(\lambda^2 x_i e^{-x_i\lambda}\big) + \sum_{i=1}^{n} log\big(\lambda^2 z_i e^{-z_i\lambda}\big) \nonumber \\
+    &= \sum_{i=1}^{m}\big(2log(\lambda) + log(x_i)+x_i\lambda \big) + \sum_{i=1+m}^{n}\big( 2log(\lambda) + log(z_i) + z_i \lambda\big) \nonumber \\
+    &= 4log(\lambda) + \sum_{i=1}^{m}\big(log(x_i) + x_i \lambda\big) + \sum_{i=1+m}^{n}\big(log(z_i) + z_i \lambda\big)
+\end{align}
+
+
+\begin{align}
+   \E (Z_i | \boldsymbol x, \lambda) &= \E f(z|\boldsymbol x, \lambda) (\lambda|\boldsymbol x, z) \nonumber \\
+    &= \E 2
+\end{align}
+
+
+
+
+\end{document}
